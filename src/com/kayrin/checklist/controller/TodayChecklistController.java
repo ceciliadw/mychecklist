@@ -1,10 +1,8 @@
 package com.kayrin.checklist.controller;
 
-import java.util.Date;
-import java.util.Random;
-
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +14,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.amazonaws.util.StringUtils;
 import com.kayrin.checklist.model.ItemDetails;
+import com.kayrin.checklist.service.ItemService;
 
 @RestController
 public class TodayChecklistController {
+	
+	@Autowired
+	private ItemService itemService; 
 	
 	@RequestMapping(value="today", method=RequestMethod.GET)
 	public ModelAndView init(Model model){
@@ -35,22 +38,19 @@ public class TodayChecklistController {
 
 	@RequestMapping(value = "updateItem", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)	
 	public @ResponseBody ResponseEntity<?> updateItem(@RequestBody ItemDetails itemDetails) {
+		//TODO: validate itemDetails
+		
+		
+		itemService.saveItemDetails(itemDetails);
+		
 		ItemDetails result = new ItemDetails();
 		result.setItemId("new item id + " + itemDetails.getItemId());
 		result.setItemText("my random text + " + itemDetails.getItemText());
+		
+		
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "ajaxtest", method = RequestMethod.GET)
-    public @ResponseBody
-    String getTime() {
- 
-        Random rand = new Random();
-        float r = rand.nextFloat() * 100;
-        String result = "<br>Next Random # is <b>" + r + "</b>. Generated on <b>" + new Date().toString() + "</b>";
-        System.out.println("Debug Message from CrunchifySpringAjaxJQuery Controller.." + new Date().toString());
-        return result;
-    }
 
 
 }
