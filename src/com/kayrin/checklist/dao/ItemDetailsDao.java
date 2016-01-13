@@ -2,7 +2,6 @@ package com.kayrin.checklist.dao;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
@@ -20,26 +19,23 @@ public class ItemDetailsDao {
 	
 	public ItemDetailsDao(){
 		dynamoDbClient = new AmazonDynamoDBClient(new ProfileCredentialsProvider());
-		java.security.Security.setProperty("networkaddress.cache.ttl" , "60");
+		java.security.Security.setProperty("networkaddress.cache.ttl" , "60");		
 	}
 	
-	public ItemDetails createItemDetails(ItemDetails requestItemDetails){
+	public ItemDetails saveItemDetails(ItemDetails itemDetails){
 		try{			
 			logger.entry();
-			logger.debug("hellow!");
-			requestItemDetails.setItemId(DateTime.now().toString());			
 			DynamoDBMapper mapper = new DynamoDBMapper(dynamoDbClient);
-	        mapper.save(requestItemDetails);
+	        mapper.save(itemDetails);
+	        logger.debug("item details saved");
 		} catch(Exception e){
-			e.printStackTrace();
 			logger.error(e);
 		} 
 		
-		return requestItemDetails;
+		logger.exit();
+		return itemDetails;
 	}
 	
-	public ItemDetails updateItemDetails(ItemDetails requestItemDetails){
-		return null;
-	}
+
 
 }

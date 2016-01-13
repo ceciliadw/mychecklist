@@ -1,5 +1,7 @@
 package com.kayrin.checklist.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.amazonaws.util.StringUtils;
 import com.kayrin.checklist.model.ItemDetails;
 import com.kayrin.checklist.service.ItemService;
 
 @RestController
 public class TodayChecklistController {
+	
+	static final Logger logger = LogManager.getLogger(TodayChecklistController.class.getName());
 	
 	@Autowired
 	private ItemService itemService; 
@@ -36,18 +39,18 @@ public class TodayChecklistController {
 	}
 	
 
-	@RequestMapping(value = "updateItem", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)	
-	public @ResponseBody ResponseEntity<?> updateItem(@RequestBody ItemDetails itemDetails) {
+	@RequestMapping(value = "saveItem", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)	
+	public @ResponseBody ResponseEntity<?> saveItem(@RequestBody ItemDetails itemDetails) {
+		logger.entry();
 		//TODO: validate itemDetails
 		
 		
 		itemService.saveItemDetails(itemDetails);
-		
 		ItemDetails result = new ItemDetails();
 		result.setItemId("new item id + " + itemDetails.getItemId());
 		result.setItemText("my random text + " + itemDetails.getItemText());
 		
-		
+		logger.exit();
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	

@@ -40,7 +40,7 @@
 						<input type="hidden" name="itemId" />
 					</div>
 					<div class="form-group">
-						<a href="#" class="btn btn-success" onclick="updateItem(this);">
+						<a href="#" class="btn btn-success" onclick="saveItem(this);">
 				          <span class="glyphicon glyphicon-check"></span> 
 				        </a>
 				        
@@ -90,7 +90,7 @@
 			$(item).prev().removeClass("hidden");
 		}
 		
-		function updateItem(itemUpdateButton){
+		function saveItem(itemUpdateButton){
 			var itemId = $(itemUpdateButton).closest(".item-div").find("input[name='itemId']");
 			var itemText = $(itemUpdateButton).closest(".item-div").find(".item-text");
 			var itemCheckbox = $(itemUpdateButton).closest(".item-div").find(".checkbox");
@@ -103,13 +103,13 @@
 			$.ajax({
 				type : "POST",
 				contentType : "application/json",
-				url : "updateItem.json",
+				url : "saveItem.json",
 				data : JSON.stringify(itemDetails),
 				dataType : 'json',
-				timeout : 100000,
+				timeout : 10000,
 				success : function(data) {
 					console.log("SUCCESS: ", data);
-					updateItemSuccess(itemText, itemCheckbox, itemUpdateButton);
+					saveItemSuccess(itemText, itemCheckbox, itemUpdateButton);
 				},
 				error : function(e) {
 					console.log("ERROR: ", e);
@@ -121,7 +121,7 @@
 		
 
 		
-		function updateItemSuccess(itemText, itemCheckbox, itemUpdateButton){
+		function saveItemSuccess(itemText, itemCheckbox, itemUpdateButton){
 			//hide edit text field
 			$(itemText).addClass("hidden");
 			
