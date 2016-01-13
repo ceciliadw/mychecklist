@@ -1,5 +1,7 @@
 package com.kayrin.checklist.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,9 @@ import com.kayrin.checklist.model.ItemDetails;
 @Component
 public class ItemDetailsDao {
 	
+	static final Logger logger = LogManager.getLogger(ItemDetailsDao.class.getName());
+
+	
 	private AmazonDynamoDBClient dynamoDbClient;
 	
 	public ItemDetailsDao(){
@@ -20,13 +25,14 @@ public class ItemDetailsDao {
 	
 	public ItemDetails createItemDetails(ItemDetails requestItemDetails){
 		try{			
-			System.out.println("cdw");
+			logger.entry();
+			logger.debug("hellow!");
 			requestItemDetails.setItemId(DateTime.now().toString());			
 			DynamoDBMapper mapper = new DynamoDBMapper(dynamoDbClient);
 	        mapper.save(requestItemDetails);
 		} catch(Exception e){
 			e.printStackTrace();
-			System.out.println("error + " + e.getMessage());
+			logger.error(e);
 		} 
 		
 		return requestItemDetails;
