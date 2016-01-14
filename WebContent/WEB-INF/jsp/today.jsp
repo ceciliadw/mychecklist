@@ -109,7 +109,7 @@
 				timeout : 10000,
 				success : function(data) {
 					console.log("SUCCESS: ", data);
-					saveItemSuccess(itemText, itemCheckbox, itemUpdateButton);
+					saveItemSuccess(itemId, itemText, itemCheckbox, itemUpdateButton, data.itemId, data.itemText);
 				},
 				error : function(e) {
 					console.log("ERROR: ", e);
@@ -121,22 +121,26 @@
 		
 
 		
-		function saveItemSuccess(itemText, itemCheckbox, itemUpdateButton){
-			//hide edit text field
+		function saveItemSuccess(itemId, itemText, itemCheckbox, itemUpdateButton, itemIdValue, itemTextValue){
+			//hide item text field
 			$(itemText).addClass("hidden");
+			$(itemText).val(itemTextValue);
 			
 			//update and show checkbox text
 			$(itemCheckbox).contents().filter(function () {
 			     return this.nodeType === 3; 
 			}).remove();
-			$(itemCheckbox).append($(itemText).attr("value"));
+			$(itemCheckbox).append(itemTextValue);
 			$(itemCheckbox).removeClass("hidden");
 			
 			//hide update button 
 			$(itemUpdateButton).addClass("hidden");
 			
 			//show edit button
-			$(itemUpdateButton).next().removeClass("hidden");			
+			$(itemUpdateButton).next().removeClass("hidden");	
+			
+			//update item id 
+			$(itemId).val(itemIdValue);
 		}
 
 	</script>

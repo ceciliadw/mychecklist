@@ -17,25 +17,28 @@ public class ItemService {
 	@Autowired
     private ItemDetailsDao itemDetailsDao; 
 	
-	public ItemDetails saveItemDetails(ItemDetails requestItemDetails){
+	public ItemDetails saveItemDetail(ItemDetails requestItemDetails){
 		logger.entry();
 		ItemDetails itemDetails = null;
-		
-		if(StringUtils.isNullOrEmpty(requestItemDetails.getItemId())){
-			//TODO: check if itemId exist in the database
-			boolean isExist = false; 
-			if(isExist){
-				
+
+		if(!StringUtils.isNullOrEmpty(requestItemDetails.getItemId())){
+			//check if itemId exist in the database
+			itemDetails = itemDetailsDao.getItemDetailByItemId(requestItemDetails.getItemId());
+			
+			//update existing item 
+			if(itemDetails != null){
+				itemDetails.setItemText(requestItemDetails.getItemText());
 			}
 		}
 		
-		
 		//create new item
-		itemDetails = new ItemDetails();
-		itemDetails.setItemText(requestItemDetails.getItemText());
-		
+		if(itemDetails == null){
+			itemDetails = new ItemDetails();
+			itemDetails.setItemText(requestItemDetails.getItemText());
+		}
+
 		logger.exit();
-		return itemDetailsDao.saveItemDetails(itemDetails); 
+		return itemDetailsDao.saveItemDetail(itemDetails); 
 	}
 	
 

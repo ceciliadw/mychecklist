@@ -42,13 +42,14 @@ public class TodayChecklistController {
 	@RequestMapping(value = "saveItem", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)	
 	public @ResponseBody ResponseEntity<?> saveItem(@RequestBody ItemDetails itemDetails) {
 		logger.entry();
+		logger.debug(itemDetails.toString());
+		
 		//TODO: validate itemDetails
 		
 		
-		itemService.saveItemDetails(itemDetails);
-		ItemDetails result = new ItemDetails();
-		result.setItemId("new item id + " + itemDetails.getItemId());
-		result.setItemText("my random text + " + itemDetails.getItemText());
+		
+		ItemDetails result = itemService.saveItemDetail(itemDetails);
+		logger.debug("new item id = " + itemDetails.getItemId());
 		
 		logger.exit();
 		return new ResponseEntity<>(result, HttpStatus.OK);

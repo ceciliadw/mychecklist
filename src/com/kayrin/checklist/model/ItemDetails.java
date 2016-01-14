@@ -44,6 +44,12 @@ public class ItemDetails implements Serializable{
 		this.taskDate = taskDate;
 	} 
 	
-	
+	@Override
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		sb	.append("itemId = " + itemId + "\n")
+			.append("itemText = " + itemText);
+		return sb.toString();
+	}
 
 }

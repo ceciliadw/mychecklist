@@ -16,18 +16,34 @@ public class ItemDetailsDao {
 
 	
 	private AmazonDynamoDBClient dynamoDbClient;
+	private DynamoDBMapper mapper;
 	
 	public ItemDetailsDao(){
 		dynamoDbClient = new AmazonDynamoDBClient(new ProfileCredentialsProvider());
+		mapper = new DynamoDBMapper(dynamoDbClient);
 		java.security.Security.setProperty("networkaddress.cache.ttl" , "60");		
 	}
 	
-	public ItemDetails saveItemDetails(ItemDetails itemDetails){
-		try{			
-			logger.entry();
-			DynamoDBMapper mapper = new DynamoDBMapper(dynamoDbClient);
+	public ItemDetails saveItemDetail(ItemDetails itemDetails){
+		logger.entry();
+		try{						
 	        mapper.save(itemDetails);
 	        logger.debug("item details saved");
+		} catch(Exception e){
+			logger.error(e);
+			throw e;
+		} 
+		
+		logger.exit();
+		return itemDetails;
+	}
+	
+	public ItemDetails getItemDetailByItemId(String itemId){
+		logger.entry();
+		ItemDetails itemDetails = null;
+		try{				 
+			itemDetails = mapper.load(ItemDetails.class, itemId);
+	        logger.debug("item details retrieved");
 		} catch(Exception e){
 			logger.error(e);
 		} 
@@ -35,7 +51,6 @@ public class ItemDetailsDao {
 		logger.exit();
 		return itemDetails;
 	}
-	
 
 
 }
