@@ -2,8 +2,6 @@ package com.kayrin.checklist.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kayrin.checklist.model.ItemDetails;
 import com.kayrin.checklist.service.ItemService;
+import com.kayrin.checklist.util.DateTimeUtil;
 
 @RestController
 public class TodayChecklistController {
@@ -27,14 +26,17 @@ public class TodayChecklistController {
 	@Autowired
 	private ItemService itemService; 
 	
+	@Autowired
+	private DateTimeUtil dateTimeUtil;
+	
 	@RequestMapping(value="today", method=RequestMethod.GET)
 	public ModelAndView init(Model model){
-		DateTime today = DateTime.now();
-		String todaysDate = today.toString(DateTimeFormat.forPattern("E, d MMM yyyy ")); 
-		model.addAttribute("todaysDate", todaysDate); 	
+
+		//model.addAttribute("todaysDate", todaysDate); 	
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("today");
-		modelAndView.addObject("todaysDate", todaysDate);
+		modelAndView.addObject("todaysDate", dateTimeUtil.getFormattedCurrentDisplayDate());
+		modelAndView.addObject("taskDate", dateTimeUtil.getFormattedCurrentDate());
 		return modelAndView;
 	}
 	

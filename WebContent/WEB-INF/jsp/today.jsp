@@ -20,6 +20,7 @@
 		<div class="row">
 		  <div class="col-xs-12 col-sm-6 col-md-8">
 		  	<h1>${todaysDate}</h1>
+		  	<input id="taskDate" type="hidden" value="${taskDate}" />
 		  	
 		  	<div id="add-button-div">
 				<a id="add-button" href="#" class="btn btn-primary">
@@ -97,6 +98,7 @@
 			
 			
 			var itemDetails = {}
+			itemDetails["taskDate"] = $("#taskDate").attr("value");
 			itemDetails["itemId"] = $(itemId).attr("value");
 			itemDetails["itemText"] = $(itemText).attr("value");
 			
